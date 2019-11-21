@@ -13,7 +13,7 @@
 ## Install
 With Browserify:
 ```
-npm install shh-signal-client --save
+npm install shh-signal --save
 ```
 
 Without Browserify:
