@@ -119,7 +119,7 @@ List all currently connecting/connected peers. Returns an array of `SimplePeer` 
 3. Go to `Geth > Settings` and enable `Use custom flags`.
 4. Add these flags to enable Websockets and Whisper:
 ```
---ws --wsorigins=* --port 30303 --nousb --shh
+--ws --wsorigins=* --shh
 ```
 5. Start Geth and wait for the node to sync.
 6. Done! You can now use this library to connect to everyone else on the Ethereum Whisper network!
