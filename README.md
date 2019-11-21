@@ -52,7 +52,7 @@ See `example.js` for a more comprehensive example.
 
 ## Client API
 
-### `signalClient = new SignalClient(web3, [options])`
+### `signalClient = new ShhSignalClient(web3, [options])`
 Create a new signalling client.
 
 Required `web3` is a **web3** instance with a provider that supports both Whisper and subscriptions (such as a `WebsocketProvider` connected to a local [`geth`](https://geth.ethereum.org/downloads/) node started with the `--shh` option).
