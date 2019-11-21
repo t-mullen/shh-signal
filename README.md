@@ -93,7 +93,7 @@ Fired on receiving a request to connect from another client.
 The id of the remote client's socket.
 
 #### `request.metadata`
-Any additional metadata passed by the requesting client or server.
+Any additional metadata passed by the requesting client.
 
 #### `{ peer, metadata } = await request.accept([metadata], [peerOptions])`
 Accept the request to connect. *Not calling this method will ignore the request.*  Returns a Promise.
