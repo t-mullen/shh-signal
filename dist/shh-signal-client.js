@@ -6,7 +6,7 @@ const EventEmitter = require('nanobus')
 const SimplePeer = require('simple-peer')
 
 const TTL = 5
-const POW_TARGET = 2.01
+const POW_GUARD = 0.2
 const POW_TIME = 20
 
 const TOPIC_DISCOVER = '0x87139212'
@@ -83,6 +83,13 @@ ShhSignalClient.prototype._onOffer = function (whisper, { pubKey, metadata, sign
   this.emit('request', request)
 }
 
+
+ShhSignalClient.prototype._getPowTarget = function (callback) {
+  this.web3.shh.getInfo().then(info => {
+    callback(info.minPow + POW_GUARD)
+  })
+}
+
 ShhSignalClient.prototype._accept = function (request, whisper, metadata = {}, peerOptions = {}) {
   peerOptions.initiator = false
   const peer = this._peers[whisper.scopedSessionId] = new SimplePeer(peerOptions)
@@ -94,15 +101,16 @@ ShhSignalClient.prototype._accept = function (request, whisper, metadata = {}, p
       metadata,
       sessionId: whisper.rawSessionId // send the raw sessionId, it will be scoped to our signature
     })
+    this._getPowTarget(powTarget =>
     this.web3.shh.post({
       pubKey: request.initiator.pubKey, // addressed to their claimed identity
       sig: this._mySigID, // sign it
       payload: txPayload,
       topic: TOPIC_SIGNAL,
       ttl: TTL,
-      powTarget: POW_TARGET,
+      powTarget,
       powTime: POW_TIME
-    })
+    }))
   })
 
   peer.once('close', () => {
@@ -144,15 +152,16 @@ ShhSignalClient.prototype._reject = function (request, whisper, metadata = {}) {
     metadata,
     sessionId: whisper.rawSessionId // raw sessionId will be scoped to our signature
   })
+  this._getPowTarget(powTarget =>
   this.web3.shh.post({
     pubKey: request.initiator.pubKey, // addressed to their claimed identity
     sig: this._mySigID, // sign it
     payload: txPayload,
     topic: TOPIC_REJECT,
     ttl: TTL,
-    powTarget: POW_TARGET,
+    powTarget,
     powTime: POW_TIME
-  })
+  }))
 }
 
 ShhSignalClient.prototype._onReject = function (whisper, { metadata }) {
@@ -196,15 +205,16 @@ ShhSignalClient.prototype.connect = function (target, metadata = {}, peerOptions
       metadata,
       sessionId: rawSessionId // remote peer will scope this to our signature
     })
+    this._getPowTarget(powTarget =>
     this.web3.shh.post({
       pubKey: target.pubKey, // addressed to their claimed identity
       sig: this._mySigID, // sign it
       payload: txPayload,
       topic,
       ttl: TTL,
-      powTarget: POW_TARGET,
+      powTarget,
       powTime: POW_TIME
-    })
+    }))
   })
 
   return new Promise((resolve, reject) => {
@@ -291,15 +301,16 @@ ShhSignalClient.prototype.discover = function (discoveryData = {}) {
     pubKey: this._myPublicKey,
     discoveryData
   })
+  this._getPowTarget(powTarget =>
   this.web3.shh.post({
     symKeyID: this._roomKeyID,
     sig: this._mySigID, // sign it
     payload: txPayload,
     topic: TOPIC_DISCOVER,
     ttl: TTL,
-    powTarget: POW_TARGET,
+    powTarget,
     powTime: POW_TIME
-  })
+  }))
 }
 
 ShhSignalClient.prototype.peers = function () {
