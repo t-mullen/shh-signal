@@ -8,7 +8,6 @@
 - All signalling data is sent over Whisper. Only STUN servers are used.
 - Video, voice, data and all the features of WebRTC work as normal.
 - Adapts almost all client features from [`simple-signal`](https://github.com/t-mullen/simple-signal).
-- Takes advantage of Whisper's probablistic routing to help obscure identity until a WebRTC connection is accepted.
 
 ## Install
 With Browserify:
