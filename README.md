@@ -122,3 +122,11 @@ List all currently connecting/connected peers. Returns an array of `SimplePeer` 
 ```
 5. Start Geth and wait for the node to sync.
 6. Done! You can now use this library to connect to everyone else on the Ethereum Whisper network!
+
+
+## Sponsors
+Support this project by becoming a sponsor. Your logo will appear here with a link to your website. [[Become a sponsor](https://github.com/sponsors/t-mullen)]
+
+<a href="https://filefire.ca"><img src="https://user-images.githubusercontent.com/14932492/84754967-15413300-af8f-11ea-80b8-3d04cccc2671.png" align="left" height="48" ></a>
+
+
